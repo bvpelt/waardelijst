@@ -1,2 +1,11 @@
-# waardelijst
-Waardelijsten
+# References
+
+## liquibase 
+- documentation https://www.liquibase.org/documentation/index.html
+- properties https://javadeveloperzone.com/spring-boot/spring-boot-liquibase-example/
+
+## h2 standalong
+Start java -jar ~/.m2/repository/com/h2database/h2/1.4.199/h2-1.4.199.jar
+which gives access to webconsole
+
+- runtime webconsole https://springframework.guru/using-the-h2-database-console-in-spring-boot-with-spring-security/

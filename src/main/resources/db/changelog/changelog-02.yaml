@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: 200
+      author: bart
+      changes:
+        - loadData:
+            columns:
+              - column:
+                  name: ID
+                  type: NUMERIC
+              - column:
+                  name: NAME
+                  type: STRING
+            encoding: UTF-8
+            file: inputdata/waardelijsten.csv
+            separator: ";"
+            tableName: WAARDELIJST

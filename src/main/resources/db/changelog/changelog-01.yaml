@@ -1,0 +1,54 @@
+databaseChangeLog:
+  - changeSet:
+      id: 100
+      author: bart
+      changes:
+        - createTable:
+            tableName: WAARDELIJST
+            columns:
+              - column:
+                  name: ID
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: NAME
+                  type: varchar(64)
+        - createTable:
+            tableName: WAARDELIJSTENTRY
+            columns:
+              - column:
+                  name: ID
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: WAARDELIJSTID
+                  type: BIGINT
+              - column:
+                  name: CODED
+                  type: INT
+              - column:
+                  name: WAARDE
+                  type: varchar(128)
+              - column:
+                  name: VANAF
+                  type: DATE
+              - column:
+                  name: TOT
+                  type: DATE
+              - column:
+                  name: TOELICHTING
+                  type: varchar(128)
+        - createIndex:
+            columns:
+              - column:
+                  name: WAARDELIJSTID
+                  type: BIGINT
+            indexName: IX_WAARDELIJSTID
+            tableName: WAARDELIJSTENTRY
+            unique: false

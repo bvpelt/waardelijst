@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - changeSet:
+      id: 300
+      author: bart
+      changes:
+        - loadData:
+            columns:
+              - column:
+                  name: ID
+                  type: NUMERIC
+              - column:
+                  name: WAARDELIJSTID
+                  type: NUMERIC
+              - column:
+                  name: CODED
+                  type: NUMERIC
+              - column:
+                  name: WAARDE
+                  type: STRING
+              - column:
+                  name: VANAF
+                  type: DATE
+              - column:
+                  name: TOT
+                  type: DATE
+              - column:
+                  name: TOELICHTING
+                  type: STRING
+            encoding: UTF-8
+            file: inputdata/waardelijstentrie.csv
+            separator: ";"
+            tableName: WAARDELIJSTENTRY
