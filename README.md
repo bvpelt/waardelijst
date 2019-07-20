@@ -5,7 +5,15 @@ The default profile is test which uses a h2 database
 ```
 $ mvn spring-boot:run 
 ```
-
+# Building
+When all sources are checked in (no local changes)
+```
+mvn clean package
+```
+As an alternative
+``` 
+mvn -Dmaven.buildNumber.doCheck=false clean package 
+```
 # References
 
 ## liquibase 
