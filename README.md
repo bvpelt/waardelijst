@@ -10,7 +10,7 @@ When all sources are checked in (no local changes)
 ```
 mvn clean package
 ```
-As an alternative
+As an alternative without checking for local changes
 ``` 
 mvn -Dmaven.buildNumber.doCheck=false clean package 
 ```

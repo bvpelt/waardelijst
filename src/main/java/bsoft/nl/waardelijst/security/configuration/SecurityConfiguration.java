@@ -18,6 +18,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         auth.inMemoryAuthentication()
                 .withUser("testuser").password("12345").roles("USER").and()
                 .withUser("admin").password("admin").roles("USER", "ADMIN");
+
         logger.info("Configured in memory security");
     }
 

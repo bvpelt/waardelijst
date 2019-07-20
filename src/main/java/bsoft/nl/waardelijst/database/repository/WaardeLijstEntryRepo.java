@@ -11,5 +11,5 @@ public interface WaardeLijstEntryRepo extends CrudRepository<WaardeLijstEntry, L
 
     List<WaardeLijstEntry> findByWaardeLijstIdAndCode(Long waardeLijstId, Long code);
 
-
+    List<WaardeLijstEntry> findByWaardeLijstId(Long waardeLijstId);
 }

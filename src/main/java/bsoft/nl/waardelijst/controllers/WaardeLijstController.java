@@ -19,11 +19,19 @@ public class WaardeLijstController  {
     @Autowired
     WaardelijstService waardelijstService;
 
+
+    @GetMapping("/waardelijst/{waardeLijstNaam}")
+    public List<WaardeLijstEntry> retrieveWaardeLijstEntries(@PathVariable String waardeLijstNaam) {
+        logger.info("Received request for waardelijst {}", waardeLijstNaam);
+        return waardelijstService.retrieveWaardeLijstEntries(waardeLijstNaam);
+    }
+
     @GetMapping("/waardelijst/{waardeLijstNaam}/{waardeLijstCode}")
     public WaardeLijstEntry retrieveWaardeLijstEntry(@PathVariable String waardeLijstNaam, @PathVariable Long waardeLijstCode) {
         logger.info("Received request for waardelijst {} code {}", waardeLijstNaam, waardeLijstCode);
         return waardelijstService.retrieveWaardeLijstEntrie(waardeLijstNaam, waardeLijstCode);
     }
+
 
     @GetMapping("/waardelijsten")
     public List<WaardeLijst> retrieveWaardelijsten() {
