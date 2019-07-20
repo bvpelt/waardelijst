@@ -1,3 +1,11 @@
+# Waardelijsten
+
+# Start app
+The default profile is test which uses a h2 database
+```
+$ mvn spring-boot:run 
+```
+
 # References
 
 ## liquibase 
@@ -9,3 +17,6 @@ Start java -jar ~/.m2/repository/com/h2database/h2/1.4.199/h2-1.4.199.jar
 which gives access to webconsole
 
 - runtime webconsole https://springframework.guru/using-the-h2-database-console-in-spring-boot-with-spring-security/
+
+## version information
+https://repository.sonatype.org/#welcome

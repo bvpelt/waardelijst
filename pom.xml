@@ -8,11 +8,19 @@
 		<version>2.2.0.M4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
+
 	<groupId>bsoft.nl</groupId>
 	<artifactId>waardelijst</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>waardelijst</name>
 	<description>Demo project for Spring Boot</description>
+
+	<scm>
+		<connection>scm:git:https://github.com/bvpelt/waardelijst.git</connection>
+		<developerConnection>scm:git:https://github.com/bvpelt/waardelijst.git</developerConnection>
+		<tag>HEAD</tag>
+		<url>https://github.com/bvpelt/waardelijst.git</url>
+	</scm>
 
 	<properties>
 		<java.version>1.8</java.version>
@@ -72,6 +80,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>$\{project.artifactId}-$\{project.version}-r$\{buildNumber}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -83,8 +92,45 @@
 					</profiles>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>buildnumber-maven-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<phase>validate</phase>
+						<goals>
+							<goal>create</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<doCheck>true</doCheck>
+					<doUpdate>true</doUpdate>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.1.2</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+						</manifest>
+						<manifestEntries>
+							<Implementation-Build>$\{buildNumber}</Implementation-Build>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
 		</plugins>
-
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 	</build>
 
 	<repositories>
