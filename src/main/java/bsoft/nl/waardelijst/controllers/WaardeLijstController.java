@@ -20,6 +20,12 @@ public class WaardeLijstController  {
     WaardelijstService waardelijstService;
 
 
+    @GetMapping("/waardelijsten")
+    public List<WaardeLijst> retrieveWaardelijsten() {
+        logger.info("Received request for waardelijsten");
+        return waardelijstService.retrieveWaardeLijsten();
+    }
+
     @GetMapping("/waardelijst/{waardeLijstNaam}")
     public List<WaardeLijstEntry> retrieveWaardeLijstEntries(@PathVariable String waardeLijstNaam) {
         logger.info("Received request for waardelijst {}", waardeLijstNaam);
@@ -32,10 +38,4 @@ public class WaardeLijstController  {
         return waardelijstService.retrieveWaardeLijstEntrie(waardeLijstNaam, waardeLijstCode);
     }
 
-
-    @GetMapping("/waardelijsten")
-    public List<WaardeLijst> retrieveWaardelijsten() {
-        logger.info("Received request for waardelijsten");
-        return waardelijstService.retrieveWaardeLijsten();
-    }
 }
