@@ -18,6 +18,9 @@ mvn -Dmaven.buildNumber.doCheck=false clean package
 
 # References
 
+## Rest
+- http://restcookbook.com/
+
 ## Caching
 - https://www.keycdn.com/blog/http-cache-headers
 - https://www.baeldung.com/spring-security-cache-control-headers
