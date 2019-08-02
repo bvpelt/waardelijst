@@ -23,10 +23,11 @@ public class WaardeLijstEntryRepoCustomImpl  implements  WaardeLijstEntryRepoCus
     public List<WaardeLijstEntry> findByWaardeLijstIdAndCodeAndVanAf(Long waardeLijstId, Long code, LocalDate vanAf) {
 
         Query query = entityManager.createNativeQuery("SELECT we.* FROM WaardeLijstEntry as we " +
-                "WHERE we.waardeLijstId = ? and we.code = ? and we.vanAf <= ? and we.tot is null", WaardeLijstEntry.class);
+                "WHERE we.waardeLijstId = ? and we.code = ? and we.vanAf <= ? and (we.tot is null or we.tot < ?)", WaardeLijstEntry.class);
         query.setParameter(1, waardeLijstId);
         query.setParameter(2, code);
         query.setParameter(3, vanAf);
+        query.setParameter(4, vanAf);
         List<WaardeLijstEntry> result = query.getResultList();
         return result;
     }
