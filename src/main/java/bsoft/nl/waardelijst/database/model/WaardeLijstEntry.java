@@ -19,7 +19,7 @@ public class WaardeLijstEntry {
     @Column(name = "WAARDELIJSTID")
     private long waardeLijstId;
 
-    @Column(name = "CODED")
+    @Column(name = "CODE")
     private long code;
 
     @Column(name = "WAARDE")

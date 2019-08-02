@@ -12,7 +12,7 @@ databaseChangeLog:
                   name: WAARDELIJSTID
                   type: NUMERIC
               - column:
-                  name: CODED
+                  name: CODE
                   type: NUMERIC
               - column:
                   name: WAARDE

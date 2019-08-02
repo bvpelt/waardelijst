@@ -30,7 +30,7 @@ databaseChangeLog:
                   name: WAARDELIJSTID
                   type: BIGINT
               - column:
-                  name: CODED
+                  name: CODE
                   type: INT
               - column:
                   name: WAARDE

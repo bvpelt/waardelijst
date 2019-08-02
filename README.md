@@ -14,7 +14,16 @@ As an alternative without checking for local changes
 ``` 
 mvn -Dmaven.buildNumber.doCheck=false clean package 
 ```
+
+
 # References
+
+## Caching
+- https://www.keycdn.com/blog/http-cache-headers
+- https://www.baeldung.com/spring-security-cache-control-headers
+
+## Custum queries
+- Extending repository https://dzone.com/articles/add-custom-functionality-to-a-spring-data-reposito
 
 ## liquibase 
 - documentation https://www.liquibase.org/documentation/index.html

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +29,11 @@ public class WaardelijstService {
         this.waardeLijstEntryRepo = waardeLijstEntryRepo;
     }
 
+    /**
+     * Return all entries for a specified waardelijstNaam
+     * @param waardeLijstNaam
+     * @return List of known entries for this waardeLijst (0..n) entries
+     */
     public List<WaardeLijstEntry> retrieveWaardeLijstEntries(final String waardeLijstNaam) {
         List<WaardeLijstEntry> waardeLijstEntries = new ArrayList<WaardeLijstEntry>();
 
@@ -36,18 +42,10 @@ public class WaardelijstService {
 
         List<bsoft.nl.waardelijst.database.model.WaardeLijst> waardeLijstEntriesDatabase = waardeLijstRepo.findByName(waardeLijstNaam);
 
-        if (waardeLijst != null) { // found at least one
+        if (waardeLijst != null) { // waardelijst onbekend
             if (waardeLijst.size() == 1) {
                 waardeLijstEntryDatabase = waardeLijstEntryRepo.findByWaardeLijstId(waardeLijst.get(0).getId());
-                if (waardeLijstEntryDatabase.size() > 0) {
-                    for (bsoft.nl.waardelijst.database.model.WaardeLijstEntry waardeLijstDatabase : waardeLijstEntryDatabase) {
-                        WaardeLijstEntry waardeLijstNew = convertFromDatabase(waardeLijstDatabase);
-                        waardeLijstEntries.add(waardeLijstNew);
-                    }
-                } else {
-                    logger.info("Waardelijst: {} heeft nog geen inhoud", waardeLijstNaam);
-                    throw new WaardelijstNotFound("Waardelijst: " + waardeLijstNaam + " heeft nog geen inhoud");
-                }
+                getWaardelijstEntries(waardeLijstNaam, waardeLijstEntries, waardeLijstEntryDatabase);
             } else {
                 logger.error("Waardelijst: {} {} keer gevonden, slechts 1 keer verwacht", waardeLijstNaam, waardeLijst.size());
                 throw new WaardelijstNotFound("Waardelijst: " + waardeLijstNaam + " " + waardeLijst.size() + " keer gevonden, slechts 1 keer verwacht");
@@ -60,7 +58,53 @@ public class WaardelijstService {
         return waardeLijstEntries;
     }
 
-    public WaardeLijstEntry retrieveWaardeLijstEntrie(final String waardeLijstNaam, final Long waardeLijstCode) {
+    /**
+     * Return all known waardelistentries for a specified waardelijst with a specific waardelijstCode
+     * @param waardeLijstNaam
+     * @param waardeLijstCode
+     * @return  List of known entries for this waardeLijst (0..n) entries
+     * Mostly there will be only one entry for a waardeLijstNaam + waardeLijstCode,
+     * but when history has been defined there will be more than one waardelijstentrie returned
+     */
+    public List<WaardeLijstEntry> retrieveWaardeLijstEntries(final String waardeLijstNaam, final Long waardeLijstCode) {
+        List<WaardeLijstEntry> waardeLijstEntries = new ArrayList<WaardeLijstEntry>();
+        List<bsoft.nl.waardelijst.database.model.WaardeLijstEntry> waardeLijstEntryDatabase = null;
+
+        List<bsoft.nl.waardelijst.database.model.WaardeLijst> waardeLijst = waardeLijstRepo.findByName(waardeLijstNaam);
+
+        if (waardeLijst != null) { // found at least one
+            if (waardeLijst.size() == 1) { // found exactly one as expected
+                waardeLijstEntryDatabase = waardeLijstEntryRepo.findByWaardeLijstIdAndCode(waardeLijst.get(0).getId(), waardeLijstCode);
+
+                if (waardeLijstEntryDatabase != null) {
+                    getWaardelijstEntries(waardeLijstNaam, waardeLijstEntries, waardeLijstEntryDatabase);
+                }
+            }
+            else {
+                logger.error("Waardelijst: {} {} keer gevonden, slechts 1 keer verwacht", waardeLijstNaam, waardeLijst.size());
+                throw new WaardelijstNotFound("Waardelijst: " + waardeLijstNaam + " " + waardeLijst.size() + " keer gevonden, slechts 1 keer verwacht");
+            }
+        } else {
+            logger.info("Waardelijst: {} niet gevonden", waardeLijstNaam);
+            throw new WaardelijstNotFound("Waardelijst: " + waardeLijstNaam + " niet gevonden");
+        }
+
+        return waardeLijstEntries;
+    }
+
+    private void getWaardelijstEntries(String waardeLijstNaam, List<WaardeLijstEntry> waardeLijstEntries, List<bsoft.nl.waardelijst.database.model.WaardeLijstEntry> waardeLijstEntryDatabase) {
+        if (waardeLijstEntryDatabase.size() > 0) {
+            for (bsoft.nl.waardelijst.database.model.WaardeLijstEntry waardeLijstDatabase : waardeLijstEntryDatabase) {
+                WaardeLijstEntry waardeLijstNew = convertFromDatabase(waardeLijstDatabase);
+                waardeLijstEntries.add(waardeLijstNew);
+            }
+        } else {
+            logger.info("Waardelijst: {} heeft nog geen inhoud", waardeLijstNaam);
+            throw new WaardelijstNotFound("Waardelijst: " + waardeLijstNaam + " heeft nog geen inhoud");
+        }
+    }
+
+    public WaardeLijstEntry retrieveWaardeLijstEntrie(final String waardeLijstNaam, final Long waardeLijstCode, final LocalDate vanAf) {
         WaardeLijstEntry waardeLijstEntry = null;
         List<bsoft.nl.waardelijst.database.model.WaardeLijstEntry> waardeLijstEntryDatabase = null;
 
@@ -68,7 +112,7 @@ public class WaardelijstService {
 
         if (waardeLijst != null) { // found at least one
             if (waardeLijst.size() == 1) {
-                waardeLijstEntryDatabase = waardeLijstEntryRepo.findByWaardeLijstIdAndCode(waardeLijst.get(0).getId(), waardeLijstCode);
+                waardeLijstEntryDatabase = waardeLijstEntryRepo.findByWaardeLijstIdAndCodeAndVanAf(waardeLijst.get(0).getId(), waardeLijstCode, vanAf);
 
                 if (waardeLijstEntryDatabase != null) {
                     if (waardeLijstEntryDatabase.size() == 1) {
@@ -101,6 +145,10 @@ public class WaardelijstService {
         return waardeLijstEntry;
     }
 
+    /**
+     * Return a list of all known waardelijsten
+     * @return List of known waardelijsten (0..n)
+     */
     public List<WaardeLijst> retrieveWaardeLijsten() {
         List<WaardeLijst> waardeLijstList = new ArrayList<WaardeLijst>();
 
