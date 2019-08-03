@@ -1,6 +1,10 @@
 package bsoft.nl.waardelijst.model;
 
-public class WaardeLijst {
+import java.io.Serializable;
+
+public class WaardeLijst implements Serializable {
+    static final long serialVersionUID=1234L;
+
     private long id;
 
     private String name;

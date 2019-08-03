@@ -67,7 +67,6 @@ public class WaardeLijstController  {
         logger.info("Received request for waardelijst {} code {} date {}", waardeLijstNaam, waardeLijstCode, date);
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyymmdd");
         final LocalDate checkDate = LocalDate.parse(date, dateTimeFormatter);
 
         WaardeLijstEntry result = waardelijstService.retrieveWaardeLijstEntrie(waardeLijstNaam, waardeLijstCode, checkDate);

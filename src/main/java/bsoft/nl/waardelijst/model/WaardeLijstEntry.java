@@ -4,10 +4,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 
 
-public class WaardeLijstEntry {
+public class WaardeLijstEntry implements Serializable {
+    static final long serialVersionUID=1235L;
+
     private static final Logger logger = LoggerFactory.getLogger(WaardeLijstEntry.class);
 
     private long code;

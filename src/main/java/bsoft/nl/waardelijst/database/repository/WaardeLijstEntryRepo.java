@@ -10,9 +10,8 @@ import java.util.List;
 @Repository
 public interface WaardeLijstEntryRepo extends CrudRepository<WaardeLijstEntry, Long> , WaardeLijstEntryRepoCustom {
 
-    List<WaardeLijstEntry> findByWaardeLijstIdAndCode(Long waardeLijstId, Long code);
+    List<WaardeLijstEntry> findByWaardeLijstIdAndCodeOrderByCodeAsc(Long waardeLijstId, Long code);
 
-//    List<WaardeLijstEntry> findByWaardeLijstIdAndCodeAndVanAf(Long waardeLijstId, Long code, LocalDate vanAf );
+    List<WaardeLijstEntry> findByWaardeLijstIdOrderByCodeAsc(Long waardeLijstId);
 
-    List<WaardeLijstEntry> findByWaardeLijstId(Long waardeLijstId);
 }

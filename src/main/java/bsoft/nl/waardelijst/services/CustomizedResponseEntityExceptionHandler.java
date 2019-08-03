@@ -23,9 +23,8 @@ public class CustomizedResponseEntityExceptionHandler {
         ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(),
                 request.getDescription(false));
         return ResponseEntity.notFound()
-                .cacheControl(CacheControl.maxAge(maxAge, TimeUnit.SECONDS).cachePublic())
+//                .cacheControl(CacheControl.maxAge(maxAge, TimeUnit.SECONDS).cachePublic())
                 .build();
-//        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(WaardelijstNotFound.class)
@@ -33,9 +32,8 @@ public class CustomizedResponseEntityExceptionHandler {
         ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(),
                 request.getDescription(false));
         return ResponseEntity.notFound()
-                .cacheControl(CacheControl.maxAge(maxAge, TimeUnit.SECONDS).cachePublic())
+//                .cacheControl(CacheControl.maxAge(maxAge, TimeUnit.SECONDS).cachePublic())
                 .build();
-// return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(WaardelijstenNotFound.class)
@@ -43,18 +41,17 @@ public class CustomizedResponseEntityExceptionHandler {
         ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(),
                 request.getDescription(false));
         return ResponseEntity.notFound()
-                .cacheControl(CacheControl.maxAge(maxAge, TimeUnit.SECONDS).cachePublic())
+//                .cacheControl(CacheControl.maxAge(maxAge, TimeUnit.SECONDS).cachePublic())
                 .build();
-// return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler({Exception.class})
     public final ResponseEntity<ErrorDetails> handleUserNotFoundException99(Exception ex, WebRequest request) {
         ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(),
                 request.getDescription(false));
-        return ResponseEntity.notFound()
-                .cacheControl(CacheControl.maxAge(maxAge, TimeUnit.SECONDS).cachePublic())
+        return ResponseEntity.badRequest()
+//                .cacheControl(CacheControl.maxAge(maxAge, TimeUnit.SECONDS).cachePublic())
                 .build();
-// return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+
     }
 }

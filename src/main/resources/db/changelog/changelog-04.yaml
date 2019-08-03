@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - changeSet:
+      id: 400
+      author: bart
+      changes:
+        - createIndex:
+            columns:
+              - column:
+                  name: WAARDELIJSTID
+                  type: BIGINT
+              - column:
+                  name: CODE
+                  type: INT
+              - column:
+                  name: VANAF
+                  type: DATE
+            indexName: IX_WAARDELIJSTENTRYID
+            tableName: WAARDELIJSTENTRY
+            unique: true
