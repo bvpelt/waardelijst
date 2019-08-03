@@ -22,6 +22,8 @@ mvn -Dmaven.buildNumber.doCheck=false clean package
 - http://restcookbook.com/
 
 ## Caching
+- documentation https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-caching.html
+- multiple keys https://stackoverflow.com/questions/14072380/cacheable-key-on-multiple-method-arguments
 - https://www.keycdn.com/blog/http-cache-headers
 - https://www.baeldung.com/spring-security-cache-control-headers
 
@@ -40,3 +42,6 @@ which gives access to webconsole
 
 ## version information
 https://repository.sonatype.org/#welcome
+
+## testing
+- https://restlet.com/documentation/client/user-guide/test/make-your-requests-and-assertions-dynamic/functions

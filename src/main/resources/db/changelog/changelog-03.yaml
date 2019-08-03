@@ -6,9 +6,6 @@ databaseChangeLog:
         - loadData:
             columns:
               - column:
-                  name: ID
-                  type: NUMERIC
-              - column:
                   name: WAARDELIJSTID
                   type: NUMERIC
               - column:

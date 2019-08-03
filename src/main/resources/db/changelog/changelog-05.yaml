@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: 500
+      author: bart
+      changes:
+        - createIndex:
+            columns:
+              - column:
+                  name: NAME
+                  type: varchar(64)
+            indexName: IX_WAARDELIJSTNAAM
+            tableName: WAARDELIJST
+            unique: true

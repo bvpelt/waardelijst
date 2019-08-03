@@ -9,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -29,12 +27,33 @@ public class WaardeLijstController  {
     private WaardelijstService waardelijstService;
 
     @GetMapping("/waardelijsten")
-    public ResponseEntity<List<WaardeLijst>> retrieveWaardelijsten() {
+    public ResponseEntity<List<WaardeLijst>> retrieveWaardeLijsten() {
         logger.info("Received request for waardelijsten");
         List<WaardeLijst> result = waardelijstService.retrieveWaardeLijsten();
         return ResponseEntity.ok()
                 .cacheControl(CacheControl.maxAge(maxAge, TimeUnit.SECONDS).cachePublic())
                 .body(result);
+    }
+
+    @PutMapping("/waardelijsten")
+    public ResponseEntity<WaardeLijst> addWaardeLijsten(@RequestBody WaardeLijst waardeLijst) {
+        WaardeLijst waardeLijst1 = waardelijstService.addWaardeLijst(waardeLijst);
+        logger.info("Waardelijst: {} added without any entries", waardeLijst.getName());
+        return ResponseEntity.ok(waardeLijst1);
+    }
+
+    @PostMapping("/waardelijsten")
+    public ResponseEntity<WaardeLijst> updateWaardeLijsten(@RequestBody WaardeLijst waardeLijst) {
+        WaardeLijst waardeLijst1 = waardelijstService.updateWaardeLijst(waardeLijst);
+        logger.info("Waardelijst: {} updated only name can be changed", waardeLijst.getName());
+        return ResponseEntity.ok(waardeLijst1);
+    }
+
+    @DeleteMapping("/waardelijsten/{id}")
+    public ResponseEntity<String> deleteWaardeLijsten(@PathVariable("id") Long id) {
+        waardelijstService.deleteWaardeLijst(id);
+        String message = "Waardelijst met id " + id + " is verwijderd";
+        return ResponseEntity.ok(message);
     }
 
     @GetMapping("/waardelijst/{waardeLijstNaam}")

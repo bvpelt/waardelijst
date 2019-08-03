@@ -8,6 +8,7 @@ import bsoft.nl.waardelijst.model.WaardeLijstEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,7 +36,7 @@ public class WaardelijstService {
      * @param waardeLijstNaam
      * @return List of known entries for this waardeLijst (0..n) entries
      */
-    @Cacheable(cacheNames = "allEntries")
+    @Cacheable(cacheNames = "allEntries", key = "#waardeLijstNaam")
     public List<WaardeLijstEntry> retrieveWaardeLijstEntries(final String waardeLijstNaam) {
         List<WaardeLijstEntry> waardeLijstEntries = new ArrayList<WaardeLijstEntry>();
 
@@ -68,7 +69,7 @@ public class WaardelijstService {
      * Mostly there will be only one entry for a waardeLijstNaam + waardeLijstCode,
      * but when history has been defined there will be more than one waardelijstentrie returned
      */
-    @Cacheable(cacheNames = "allEntries")
+    @Cacheable(cacheNames = "allEntries", key = "{#waardelijstNaam, #waardeLijstCode}")
     public List<WaardeLijstEntry> retrieveWaardeLijstEntries(final String waardeLijstNaam, final Long waardeLijstCode) {
         List<WaardeLijstEntry> waardeLijstEntries = new ArrayList<WaardeLijstEntry>();
         List<bsoft.nl.waardelijst.database.model.WaardeLijstEntry> waardeLijstEntryDatabase = null;
@@ -108,8 +109,8 @@ public class WaardelijstService {
         }
     }
 
-    @Cacheable(cacheNames = "allEntries")
-    public WaardeLijstEntry retrieveWaardeLijstEntrie(final String waardeLijstNaam, final Long waardeLijstCode, final LocalDate vanAf) {
+    @Cacheable(cacheNames = "allEntries", key = "{#waardeLijstNaam, #waardeLijstCode}")
+    public WaardeLijstEntry retrieveWaardeLijstEntrie(final String waardeLijstNaam, final Long waardeLijstCode, final LocalDate peilDatum) {
         WaardeLijstEntry waardeLijstEntry = null;
         List<bsoft.nl.waardelijst.database.model.WaardeLijstEntry> waardeLijstEntryDatabase = null;
 
@@ -117,7 +118,7 @@ public class WaardelijstService {
 
         if (waardeLijst != null) { // found at least one
             if (waardeLijst.size() == 1) {
-                waardeLijstEntryDatabase = waardeLijstEntryRepo.findByWaardeLijstIdAndCodeAndVanAf(waardeLijst.get(0).getId(), waardeLijstCode, vanAf);
+                waardeLijstEntryDatabase = waardeLijstEntryRepo.findByWaardeLijstIdAndCodeAndPeilDatum(waardeLijst.get(0).getId(), waardeLijstCode, peilDatum);
 
                 if (waardeLijstEntryDatabase != null) {
                     if (waardeLijstEntryDatabase.size() == 1) {
@@ -154,7 +155,7 @@ public class WaardelijstService {
      * Return a list of all known waardelijsten
      * @return List of known waardelijsten (0..n)
      */
-    @Cacheable(cacheNames = "allWaardelijsten")
+    @Cacheable(cacheNames = "allWaardelijsten" )
     public List<WaardeLijst> retrieveWaardeLijsten() {
         List<WaardeLijst> waardeLijstList = new ArrayList<WaardeLijst>();
 
@@ -176,6 +177,41 @@ public class WaardelijstService {
         }
 
         return waardeLijstList;
+    }
+
+    @CacheEvict(cacheNames = "allWaardelijsten", allEntries = true)
+    public WaardeLijst addWaardeLijst(WaardeLijst waardeLijst) {
+        bsoft.nl.waardelijst.database.model.WaardeLijst waardeLijstDatabase = null;
+        waardeLijstDatabase = convertToDatabase(waardeLijst);
+
+        waardeLijstDatabase = waardeLijstRepo.save(waardeLijstDatabase);  // name is uniqe!!!
+
+        WaardeLijst result = convertFromDatabase(waardeLijstDatabase);
+
+        return result;
+    }
+
+    @CacheEvict(cacheNames = "allWaardelijsten", allEntries = true)
+    public WaardeLijst updateWaardeLijst(WaardeLijst waardeLijst) {
+        bsoft.nl.waardelijst.database.model.WaardeLijst waardeLijstDatabase = null;
+        waardeLijstDatabase = convertToDatabase(waardeLijst);
+
+        waardeLijstDatabase = waardeLijstRepo.save(waardeLijstDatabase);  // name is uniqe!!!
+
+        WaardeLijst result = convertFromDatabase(waardeLijstDatabase);
+
+        return result;
+    }
+
+    @CacheEvict(cacheNames = "allWaardelijsten", allEntries = true)
+    public void deleteWaardeLijst(Long id) {
+        waardeLijstRepo.deleteById(id);
+    }
+
+    private bsoft.nl.waardelijst.database.model.WaardeLijst convertToDatabase(WaardeLijst waardeLijst) {
+        bsoft.nl.waardelijst.database.model.WaardeLijst waardeLijstDatabase = new bsoft.nl.waardelijst.database.model.WaardeLijst();
+        waardeLijstDatabase.setName(waardeLijst.getName());
+        return waardeLijstDatabase;
     }
 
     private WaardeLijstEntry convertFromDatabase(bsoft.nl.waardelijst.database.model.WaardeLijstEntry databaseEntry) {

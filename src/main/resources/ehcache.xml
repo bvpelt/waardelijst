@@ -8,23 +8,23 @@
 
     <!-- several caches -->
     <cache name="allWaardelijsten"
-           maxEntriesLocalHeap="5000"
-           maxEntriesLocalDisk="10000"
+           maxEntriesLocalHeap="50"
+           maxEntriesLocalDisk="100"
            eternal="false"
            diskSpoolBufferSizeMB="2"
-           timeToIdleSeconds="200"
-           timeToLiveSeconds="500"
+           timeToIdleSeconds="120"
+           timeToLiveSeconds="600"
            memoryStoreEvictionPolicy="LFU"
            transactionalMode="off">
         <persistence strategy="localTempSwap"/>
     </cache>
     <cache name="allEntries"
-           maxEntriesLocalHeap="100"
-           maxEntriesLocalDisk="1000"
+           maxEntriesLocalHeap="5000"
+           maxEntriesLocalDisk="20000"
            eternal="false"
-           diskSpoolBufferSizeMB="2"
-           timeToIdleSeconds="200"
-           timeToLiveSeconds="500"
+           diskSpoolBufferSizeMB="10"
+           timeToIdleSeconds="120"
+           timeToLiveSeconds="600"
            memoryStoreEvictionPolicy="LFU"
            transactionalMode="off">
         <persistence strategy="localTempSwap"/>
