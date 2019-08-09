@@ -21,7 +21,7 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
-@Profile("runtime")
+@Profile("postgres")
 @EnableJpaRepositories(
         basePackages = {"bsoft.nl.waardelijst.database.repository"},
         entityManagerFactoryRef = "entityManagerFactoryPg",

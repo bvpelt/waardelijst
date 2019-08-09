@@ -21,7 +21,7 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
-@Profile("test")
+@Profile("h2")
 @EnableJpaRepositories(
         basePackages = {"bsoft.nl.waardelijst.database.repository"},
         entityManagerFactoryRef = "entityManagerFactoryH2",
