@@ -1,0 +1,5 @@
+USERNAME;PASSWORD;FIRSTNAME;LASTNAME;AUTHDATA;EMAIL
+test;test;test;user;;test@gmail.com
+testuser;12345;testuser;user;;testuser@gmail.com
+guest;1234;guest;user;;guestuser@gmail.com
+admin;geheim;Administrator;Waardelijsten;;administrator@gmail.com

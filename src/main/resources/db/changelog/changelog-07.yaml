@@ -1,0 +1,50 @@
+databaseChangeLog:
+  - changeSet:
+      id: 700
+      author: bart
+      changes:
+        - loadData:
+            columns:
+              - column:
+                  name: ROLE
+                  type: STRING
+            encoding: UTF-8
+            file: inputdata/role.csv
+            separator: ";"
+            tableName: ROLE
+        - loadData:
+            columns:
+              - column:
+                  name: USERNAME
+                  type: STRING
+              - column:
+                  name: PASSWORD
+                  type: STRING
+              - column:
+                  name: FIRSTNAME
+                  type: STRING
+              - column:
+                  name: LASTNAME
+                  type: STRING
+              - column:
+                  name: AUTHDATA
+                  type: STRING
+              - column:
+                  name: EMAIL
+                  type: STRING
+            encoding: UTF-8
+            file: inputdata/user.csv
+            separator: ";"
+            tableName: USERS
+        - loadData:
+            columns:
+              - column:
+                  name: USER_ID
+                  type: NUMERIC
+              - column:
+                  name: ROLE_ID
+                  type: NUMERIC
+            encoding: UTF-8
+            file: inputdata/users_role.csv
+            separator: ";"
+            tableName: USERS_ROLE

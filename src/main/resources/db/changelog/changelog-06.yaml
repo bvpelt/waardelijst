@@ -1,0 +1,89 @@
+databaseChangeLog:
+  - changeSet:
+      id: 600
+      author: bart
+      changes:
+        - createTable:
+            tableName: USERS
+            columns:
+              - column:
+                  name: ID
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: USERNAME
+                  type: varchar(32)
+              - column:
+                  name: PASSWORD
+                  type: varchar(32)
+              - column:
+                  name: FIRSTNAME
+                  type: varchar(24)
+              - column:
+                  name: LASTNAME
+                  type: varchar(48)
+              - column:
+                  name: AUTHDATA
+                  type: varchar(128)
+              - column:
+                  name: EMAIL
+                  type: varchar(128)
+        - createIndex:
+            columns:
+              - column:
+                  name: USERNAME
+                  type: varchar(32)
+            indexName: IX_USERNAME
+            tableName: USERS
+            unique: true
+        - createTable:
+            tableName: ROLE
+            columns:
+              - column:
+                  name: ID
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: ROLE
+                  type: varchar(32)
+        - createIndex:
+            columns:
+              - column:
+                  name: ROLE
+                  type: varchar(32)
+            indexName: IX_ROLE
+            tableName: ROLE
+            unique: true
+        - createTable:
+            tableName: USERS_ROLE
+            columns:
+              - column:
+                  name: ID
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: USER_ID
+                  type: BIGINT
+              - column:
+                  name: ROLE_ID
+                  type: BIGINT
+        - createIndex:
+            columns:
+              - column:
+                  name: USER_ID
+                  type: BIGINT
+              - column:
+                  name: ROLE_ID
+                  type: BIGINT
+            indexName: IX_USERROLE
+            tableName: USERS_ROLE
+            unique: true
