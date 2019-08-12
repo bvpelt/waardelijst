@@ -16,6 +16,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+@CrossOrigin(origins = "*",
+        allowCredentials = "true",
+        allowedHeaders = {"*"},
+        methods = {RequestMethod.GET,
+                RequestMethod.DELETE,
+                RequestMethod.POST,
+                RequestMethod.OPTIONS
+        })
 @RestController
 public class WaardeLijstController  {
     private static final Logger logger = LoggerFactory.getLogger(WaardeLijstController.class);

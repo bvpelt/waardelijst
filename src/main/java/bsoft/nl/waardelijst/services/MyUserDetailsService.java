@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Transactional
@@ -30,22 +31,24 @@ public class MyUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         try {
-            User user = userRepository.findByUsername(username);
-            if (user == null) {
+            Optional<User> user = userRepository.findByUsername(username);
+            if ((user == null) || !user.isPresent()) {
                 logger.debug("user not found with the provided username");
                 return null;
+            } else {
+                User userFound = user.get();
+
+                logger.debug(" user from username " + userFound.toString());
+                return new org.springframework.security.core.userdetails.User(userFound.getUsername(), userFound.getPassword(), getAuthorities(userFound));
             }
-            logger.debug(" user from username " + user.toString());
-            return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), getAuthorities(user));
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new UsernameNotFoundException("User not found");
         }
     }
 
-    private Set<GrantedAuthority> getAuthorities(User user){
+    private Set<GrantedAuthority> getAuthorities(User user) {
         Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
-        for(Role role : user.getRoles()) {
+        for (Role role : user.getRoles()) {
             GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(role.getRole());
             authorities.add(grantedAuthority);
         }
