@@ -103,4 +103,24 @@ public class User implements Serializable  {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
+
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("id: ");
+        sb.append(this.id);
+        sb.append(" username: ");
+        sb.append(username);
+        sb.append(" password: ");
+        sb.append(password);
+        sb.append(" firstName: ");
+        sb.append(firstName);
+        sb.append(" lastName: ");
+        sb.append(lastName);
+        sb.append(" authdata: ");
+        sb.append(authdata);
+        sb.append(" email: ");
+        sb.append(email);
+
+        return sb.toString();
+    }
 }

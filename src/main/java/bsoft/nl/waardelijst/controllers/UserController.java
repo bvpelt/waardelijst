@@ -63,8 +63,8 @@ public class UserController {
     public ResponseEntity<User> authenticate(@RequestBody AuthRequest authRequest) {
         User user1 = userService.findUserByUsernameAndPassword(authRequest.getUsername(), authRequest.getPassword());
         logger.info("User: {} found", user1.toString());
-        return ResponseEntity.ok()
-                .body(user1);
+        return ResponseEntity.ok(user1);
+//                .body(user1);
     }
 
     @PostMapping("/users")
