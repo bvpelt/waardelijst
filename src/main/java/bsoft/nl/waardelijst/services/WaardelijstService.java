@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -70,7 +71,7 @@ public class WaardelijstService {
      * Mostly there will be only one entry for a waardeLijstNaam + waardeLijstCode,
      * but when history has been defined there will be more than one waardelijstentrie returned
      */
-    @Cacheable(cacheNames = "allEntries", key = "{#waardelijstNaam, #waardeLijstCode}")
+    @Cacheable(cacheNames = "allEntries", key = "{ #waardelijstNaam, #waardeLijstCode }")
     public List<WaardeLijstEntry> retrieveWaardeLijstEntries(final String waardeLijstNaam, final Long waardeLijstCode) {
         List<WaardeLijstEntry> waardeLijstEntries = new ArrayList<WaardeLijstEntry>();
         List<bsoft.nl.waardelijst.database.model.WaardeLijstEntry> waardeLijstEntryDatabase = null;
@@ -97,7 +98,6 @@ public class WaardelijstService {
         return waardeLijstEntries;
     }
 
-
     private void getWaardelijstEntries(String waardeLijstNaam, List<WaardeLijstEntry> waardeLijstEntries, List<bsoft.nl.waardelijst.database.model.WaardeLijstEntry> waardeLijstEntryDatabase) {
         if (waardeLijstEntryDatabase.size() > 0) {
             for (bsoft.nl.waardelijst.database.model.WaardeLijstEntry waardeLijstDatabase : waardeLijstEntryDatabase) {
@@ -110,7 +110,7 @@ public class WaardelijstService {
         }
     }
 
-    @Cacheable(cacheNames = "allEntries", key = "{#waardeLijstNaam, #waardeLijstCode}")
+    @Cacheable(cacheNames = "allEntries", key = "{ #waardeLijstNaam, #waardeLijstCode }")
     public WaardeLijstEntry retrieveWaardeLijstEntrie(final String waardeLijstNaam, final Long waardeLijstCode, final LocalDate peilDatum) {
         WaardeLijstEntry waardeLijstEntry = null;
         List<bsoft.nl.waardelijst.database.model.WaardeLijstEntry> waardeLijstEntryDatabase = null;
@@ -180,6 +180,7 @@ public class WaardelijstService {
         return waardeLijstList;
     }
 
+    @Cacheable(cacheNames = "allWaardelijsten", key ="#id" )
     public WaardeLijst retrieveOneWaardeLijsten(final Long id) {
         WaardeLijst waardeLijst = null;
 
@@ -195,6 +196,7 @@ public class WaardelijstService {
         return waardeLijst;
     }
 
+    @Cacheable(cacheNames = "allWaardelijsten", key ="#name" )
     public List<WaardeLijst> retrieveNameWaardeLijsten(final String name) {
         List<WaardeLijst> waardeLijstList = new ArrayList<WaardeLijst>();
 
@@ -230,7 +232,11 @@ public class WaardelijstService {
         return result;
     }
 
-    @CacheEvict(cacheNames = "allWaardelijsten", allEntries = true)
+    @Caching(evict = {
+            @CacheEvict(cacheNames = "allWaardelijsten", allEntries = true),
+            @CacheEvict(cacheNames = "allWaardelijsten", key="#waardeLijst.id"),
+            @CacheEvict(cacheNames = "allWaardelijsten", key="#waardeLijst.name")
+    })
     public WaardeLijst updateWaardeLijst(WaardeLijst waardeLijst) {
         bsoft.nl.waardelijst.database.model.WaardeLijst waardeLijstDatabase = null;
         waardeLijstDatabase = convertToDatabase(waardeLijst);
@@ -242,7 +248,10 @@ public class WaardelijstService {
         return result;
     }
 
-    @CacheEvict(cacheNames = "allWaardelijsten", allEntries = true)
+    @Caching(evict = {
+            @CacheEvict(cacheNames = "allWaardelijsten", allEntries = true),
+            @CacheEvict(cacheNames = "allWaardelijsten", key="#waardeLijst.id")
+    })
     public void deleteWaardeLijst(Long id) {
         waardeLijstRepo.deleteById(id);
     }

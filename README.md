@@ -53,5 +53,19 @@ https://repository.sonatype.org/#welcome
 
 ## Maven
 - Analyze See https://maven.apache.org/plugins/maven-dependency-plugin/plugin-info.html
+- execute analysis https://czcodezone.blogspot.com/2014/11/maven-analyze-dependency.html
+targets
+```
+$ mvn dependency:analyze
+$ mvn dependency:analyze-dep-mgt
+$ mvn dependency:analyze-report
+$ mvn dependency:analyze-duplicate
+$ mvn dependency:list
+$ mvn dependency:list-repositories
+$ mvn dependency:purge-local-repository
+$ mvn dependency:tree
+$ mvn mvn dependency:resolve-plugins
+```
 - Versions See https://www.mojohaus.org/versions-maven-plugin/usage.html
+- Documentation generation See https://maven.apache.org/plugins/maven-site-plugin/examples/sitedescriptor.html
 

@@ -132,18 +132,7 @@
     <build>
         <finalName>${project.artifactId}-${project.version}-r${buildNumber}</finalName>
         <plugins>
-			<!--
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <profiles>
-                        <profile>postgres</profile>
-                        <profile>h2</profile>
-                    </profiles>
-                </configuration>
-            </plugin>
--->
+
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>buildnumber-maven-plugin</artifactId>
@@ -157,10 +146,15 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <doCheck>true</doCheck>
-                    <doUpdate>true</doUpdate>
+                    <doCheck>false</doCheck>
+                    <doUpdate>false</doUpdate>
                     <shortRevisionLength>8</shortRevisionLength>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.8.2</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -190,24 +184,6 @@
                     <execution>
                         <id>copy</id>
                         <phase>package</phase>
-                        <goals>
-                            <goal>copy</goal>
-                        </goals>
-                        <configuration>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>[ groupId ]</groupId>
-                                    <artifactId>[ artifactId ]</artifactId>
-                                    <version>[ version ]</version>
-                                    <type>[ packaging ]</type>
-                                    <classifier> [classifier - optional] </classifier>
-                                    <overWrite>[ true or false ]</overWrite>
-                                    <outputDirectory>[ output directory ]</outputDirectory>
-                                    <destFileName>[ filename ]</destFileName>
-                                </artifactItem>
-                            </artifactItems>
-                            <!-- other configurations here -->
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
