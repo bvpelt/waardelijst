@@ -1,6 +1,5 @@
 package bsoft.nl.waardelijst.database.repository;
 
-import bsoft.nl.waardelijst.database.model.WaardeLijst;
 import bsoft.nl.waardelijst.database.model.WaardeLijstEntry;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +13,7 @@ import java.util.List;
 
 @Repository
 @Transactional(readOnly = true)
-public class WaardeLijstEntryRepoCustomImpl  implements  WaardeLijstEntryRepoCustom {
+public class WaardeLijstEntryRepoCustomImpl implements WaardeLijstEntryRepoCustom {
 
     @PersistenceContext
     EntityManager entityManager;

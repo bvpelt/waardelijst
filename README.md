@@ -50,3 +50,8 @@ which gives access to webconsole
 
 ## Version information
 https://repository.sonatype.org/#welcome
+
+## Maven
+- Analyze See https://maven.apache.org/plugins/maven-dependency-plugin/plugin-info.html
+- Versions See https://www.mojohaus.org/versions-maven-plugin/usage.html
+

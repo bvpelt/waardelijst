@@ -43,6 +43,25 @@ public class WaardeLijstController  {
                 .body(result);
     }
 
+    @GetMapping("/waardelijsten/{id}")
+    public ResponseEntity<WaardeLijst> retrieveOneWaardeLijsten(@PathVariable("id") Long id) {
+        logger.info("Received request for waardelijsten with id: {}", id);
+        WaardeLijst result = waardelijstService.retrieveOneWaardeLijsten(id);
+        return ResponseEntity.ok()
+                .cacheControl(CacheControl.maxAge(maxAge, TimeUnit.SECONDS).cachePublic())
+                .body(result);
+    }
+
+    @GetMapping("/waardelijsten/")
+    public ResponseEntity<List<WaardeLijst>> retrieveWaardeLijsten(@RequestParam(value="name", defaultValue="") String name) {
+        logger.info("Received request for waardelijsten with (partial) name: {}", name);
+        List<WaardeLijst> result = waardelijstService.retrieveNameWaardeLijsten(name);
+        return ResponseEntity.ok()
+                .cacheControl(CacheControl.maxAge(maxAge, TimeUnit.SECONDS).cachePublic())
+                .body(result);
+    }
+
+
     @PutMapping("/waardelijsten")
     public ResponseEntity<WaardeLijst> addWaardeLijsten(@RequestBody WaardeLijst waardeLijst) {
         WaardeLijst waardeLijst1 = waardelijstService.addWaardeLijst(waardeLijst);

@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Transactional
 @Service
@@ -161,6 +162,44 @@ public class WaardelijstService {
 
         Iterable<bsoft.nl.waardelijst.database.model.WaardeLijst> waardelijstDatabaseList = null;
         waardelijstDatabaseList = waardeLijstRepo.findAll();
+
+        int count = 0;
+        for (bsoft.nl.waardelijst.database.model.WaardeLijst waardeLijstDatabase : waardelijstDatabaseList) {
+            WaardeLijst waardeLijst = null;
+
+            waardeLijst = convertFromDatabase(waardeLijstDatabase);
+
+            waardeLijstList.add(waardeLijst);
+            count++;
+        }
+
+        if ((waardelijstDatabaseList == null) || (count == 0)) {
+            throw new WaardelijstenNotFound("Waardelijsten niet gevonden");
+        }
+
+        return waardeLijstList;
+    }
+
+    public WaardeLijst retrieveOneWaardeLijsten(final Long id) {
+        WaardeLijst waardeLijst = null;
+
+        Optional<bsoft.nl.waardelijst.database.model.WaardeLijst> waardelijstDatabase = null;
+        waardelijstDatabase = waardeLijstRepo.findById(id);
+
+        if (waardelijstDatabase != null && waardelijstDatabase.isPresent()) {
+            waardeLijst = convertFromDatabase(waardelijstDatabase.get());
+        } else {
+            throw new WaardelijstenNotFound("Waardelijsten met id: " + id + " niet gevonden");
+        }
+
+        return waardeLijst;
+    }
+
+    public List<WaardeLijst> retrieveNameWaardeLijsten(final String name) {
+        List<WaardeLijst> waardeLijstList = new ArrayList<WaardeLijst>();
+
+        Iterable<bsoft.nl.waardelijst.database.model.WaardeLijst> waardelijstDatabaseList = null;
+        waardelijstDatabaseList = waardeLijstRepo.findByPartialName(name);
 
         int count = 0;
         for (bsoft.nl.waardelijst.database.model.WaardeLijst waardeLijstDatabase : waardelijstDatabaseList) {
